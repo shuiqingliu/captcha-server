@@ -62,8 +62,8 @@
                         <li class="layui-nav-item layui-nav-itemed">
                             <a class="javascript:;" href="javascript:;">验证码识别</a>
                             <dl class="layui-nav-child">
-                                <dd><a href="">验证码识别接口</a></dd>
-                                <dd><a href="">验证码识别测试</a></dd>
+                                <dd><a href="{{ url_for('captcha.api') }}">验证码识别接口</a></dd>
+                                <dd><a href="{{ url_for('captcha.test') }}">验证码识别测试</a></dd>
                             </dl>
                         </li>
                         <li class="layui-nav-item layui-nav-itemed">
@@ -135,7 +135,8 @@
                     </ul>
                 </div>
             </div>
-
+            {% block content %}{% endblock %}
+            {% block script %}{% endblock %}
             <script src="../static/layui.js" charset="utf-8"></script>
             <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
             <script>layui.use('element',
