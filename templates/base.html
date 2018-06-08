@@ -84,7 +84,7 @@
 
 
             {% block content %}{% endblock %}
-            {% block script %}{% endblock %}
+
             <script src="../static/layui.js" charset="utf-8"></script>
             <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
             <script>layui.use('element',
@@ -96,7 +96,9 @@
                         //console.log(elem)
                         layer.msg(elem.text());
                     });
-                });</script>
+                });
+            {% block script %}{% endblock %}
+            </script>
         </div>
     </body>
 
