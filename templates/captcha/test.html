@@ -21,6 +21,10 @@
                   <button type="button" class="layui-btn" id="test1">
                     <i class="layui-icon">&#xe67c;</i>上传图片
                   </button>
+                   <blockquote class="layui-elem-quote" style="margin-top: 20px;">返回结果</blockquote>
+                  <pre class="layui-code" lay-title="JSON 示例"  lay-skin="notepad" id="result-block">
+
+</pre>
               </div>
           </div>
       </div>
@@ -35,6 +39,18 @@ layui.use('upload', function(){
     ,url: '/captcha/api/upload' //上传接口
     ,done: function(res){
       //上传完毕回调
+        console.log(res);
+        var resultStr = "{";
+        for(key in res) {
+            if(res.hasOwnProperty(key)) {
+                var value = res[key];
+                console.log(value);
+                resultStr = resultStr + key + ":" + value + ",";
+            }
+        }
+        resultStr = resultStr.slice(0,-1) + "}";
+        document.getElementById('result-block').innerHTML= resultStr;
+
     }
     ,accept: 'images'
     ,acceptMime: 'image/jpg, image/png'
@@ -42,7 +58,7 @@ layui.use('upload', function(){
       //请求异常回调
     }
     ,choose: function(obj){
-        var files = obj.pushFile();
+        files = obj.pushFile();
         var none = 'none';
         obj.preview(function(index, file, result){
             console.log(index);

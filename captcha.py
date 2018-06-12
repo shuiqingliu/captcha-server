@@ -22,29 +22,43 @@ def upload():
     if request.method == 'POST':
         img = request.files.get("file")
         path = BASEDIR + "/static/imgs/"
-        file_path = path
+        file_path = ""
         filenameArray = img.filename.split('.')
 
         if not os.path.exists(path):
             os.makedirs(path)
 
-        if not os.path.isfile(file_path+img.filename):
-            img.save(file_path + img.filename)
+        if not os.path.isfile(path +img.filename):
+            img.save(path + img.filename)
+            file_path = path + img.filename
         else:
-            img.save(file_path + filenameArray[0].strip() + "_." + filenameArray[1])
+            img.save(path + filenameArray[0].strip() + "_." + filenameArray[1])
+            file_path = path + filenameArray[0].strip() + "_." + filenameArray[1]
         print("uploaded image:" + img.filename)
-        response['status'] = 200
-        response['message'] = 'success'
+
+        recResult  = imgrec(file_path)
+        response['data'] = recResult['data']
+        response['status'] = recResult["status"]
+        response['message'] = recResult["message"]
         return jsonify(response)
     else:
         response['status'] = 405
         response['message'] = "不支持的方法"
         return jsonify(response)
 
-# def imgrec(path):
-#     #read img
-#     #TODO：
-#
-#     url = GLOBAL["Server"]
-#     resonse = requests.post(url)
-#     result = json.loads(resonse.text)
+from PIL import Image
+from io import BytesIO
+import base64
+def imgrec(path):
+    #read img
+    image = Image.open(path)
+    buffered = BytesIO()
+    image.save(buffered,format="png")
+    imgBase64Str = base64.b64encode(buffered.getvalue())
+
+    #get image result
+    url = GLOBAL["Server"] + imgBase64Str.decode("utf-8")
+    resonse = requests.post(url)
+    result = json.loads(resonse.text)
+    return result
+    print(result)
