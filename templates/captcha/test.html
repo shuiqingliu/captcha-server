@@ -50,15 +50,16 @@ layui.use('upload', function(){
         }
         resultStr = resultStr.slice(0,-1) + "}";
         document.getElementById('result-block').innerHTML= resultStr;
-
+        document.getElementsByName('file')[0].value='';
     }
     ,accept: 'images'
     ,acceptMime: 'image/jpg, image/png'
+    ,multiple : false
     ,error: function(){
       //请求异常回调
     }
     ,choose: function(obj){
-        files = obj.pushFile();
+{#        files = obj.pushFile();#}
         var none = 'none';
         obj.preview(function(index, file, result){
             console.log(index);
@@ -68,6 +69,11 @@ layui.use('upload', function(){
             document.querySelector('#joke').style.display = none;
         });
     }
+    ,resetFile: function(index, file, filename){
+        var newFile = new File([file], filename);
+        that.files = that.files || {};
+        that.files[index] = newFile;
+      }
   });
 });
 {% endblock %}

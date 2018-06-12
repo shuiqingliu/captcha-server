@@ -57,8 +57,8 @@ def imgrec(path):
     imgBase64Str = base64.b64encode(buffered.getvalue())
 
     #get image result
-    url = GLOBAL["Server"] + imgBase64Str.decode("utf-8")
+    url = GLOBAL["APIServer"] + imgBase64Str.decode("utf-8")
     resonse = requests.post(url)
     result = json.loads(resonse.text)
-    return result
     print(result)
+    return result
